@@ -23,13 +23,42 @@ Install brew (https://brew.sh)
    pyenv virtualenv 3.8.10 embedding-env
    pyenv activate embedding-env
    ```
+2. **Create Environment Script**
+   ```bash
+   vi ~/.bashrc
+   ```
+   Paste the following contents in:
+   ```bash
+   export PATH="$HOME/.pyenv/bin:$PATH"
+   eval "$(pyenv init --path)"
+   eval "$(pyenv init -)"
+   eval "$(pyenv virtualenv-init -)"
+   
+   ```
+   (Don't forget newline charater)
 
-2. **Install Required Packages**
+   We can run this to reset
+   ```bash
+   exec "$SHELL"
+   ```
+
+   And when we activate the environment and **fail**, run
+   ```bash
+   source ~/.bashrc
+   ```
+   to reset, then run
+   ```bash
+   pyenv virtualenvs
+   ```
+   to see our environments.
+   
+
+4. **Install Required Packages**
    ```bash
    pip install spacy faiss-cpu scikit-learn
    ```
 
-3. **Download `spaCy` Language Model**
+5. **Download `spaCy` Language Model**
    ```bash
    python -m spacy download en_core_web_md
    ```
@@ -54,7 +83,7 @@ Install brew (https://brew.sh)
    This script will:
    - Traverse the directory `path/to/your/txt/folder` and create embeddings for each `.txt` file.
    - Save all embeddings as `embeddings.json` in the specified output path.
-
+  
 4. **Query Embeddings**
 
    Run the query script to load the embeddings from `embeddings.json` and perform similarity searches with FAISS.
