@@ -28,15 +28,18 @@ d = embedding_matrix.shape[1]
 index = faiss.IndexFlatL2(d)  
 index.add(embedding_matrix)  
 
-def query_faiss(query_text, n_results=5):
+def query_faiss(query_text, n_results=20):
     query_embedding = np.array([nlp(query_text).vector]).astype('float32')
 
     distances, indices = index.search(query_embedding, n_results)
 
     results = [(list(embeddings_dict.keys())[idx], distances[0][i]) for i, idx in enumerate(indices[0])]
+
+    results.sort(key=lambda x: x[1], reverse=True)
+
     return results
 
-query = "Mental health resource contact?"
+query = "internation students financial aid"
 similar_docs = query_faiss(query)
 for path, score in similar_docs:
     print(f"Document: {path}, Similarity Score: {score}")

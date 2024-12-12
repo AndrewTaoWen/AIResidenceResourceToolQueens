@@ -1,3 +1,5 @@
 /QueensDataPDF
 /venv
 /QueensDataTXT
+*.pyc
+db.sqlite3
