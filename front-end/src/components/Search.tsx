@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { sendData } from "../api/textSearch";
-import { SimilaritySearchResponse } from "../types/similaritySearchRespoonse";
+import { SimilarityResponseItem } from "../types/similaritySearchRespoonse";
 import { Button, Input, InputOnChangeData, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "@fluentui/react-components";
 
 const COLUMNS = ["File Path", "Similarity Score"]
@@ -8,7 +8,7 @@ const COLUMNS = ["File Path", "Similarity Score"]
 export function Search() {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
-    const [response, setResponse] = useState<SimilaritySearchResponse>();
+    const [response, setResponse] = useState<SimilarityResponseItem[]>();
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string>('');
 
@@ -27,6 +27,7 @@ export function Search() {
               const result = await sendData(text);
               console.log("Result:", result);
               setResponse(result);
+              console.log("Response:", response);
             } catch (err) {
               console.error(err);
               setError('An error occurred while fetching data');
@@ -64,7 +65,7 @@ export function Search() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {response.data.map((item) => (
+                    {response.map((item) => (
                     <TableRow key={item.file_path}>
                         <TableCell>
                             {item.file_path}
