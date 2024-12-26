@@ -3,6 +3,7 @@ import { sendData } from "../../api/textSearch";
 import { SimilarityResponseItem } from "../../types/similaritySearchRespoonse";
 import { Button, Input, InputOnChangeData, Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from "@fluentui/react-components";
 import { useStyles } from "./Styles";
+import { MarkdownDialog } from "../InfoBoxes/InfoBox";
 
 const COLUMNS = ["File Path", "Similarity Score"]
 
@@ -12,6 +13,8 @@ export function Search() {
     const [response, setResponse] = useState<SimilarityResponseItem[]>();
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const handleTextChange = (event: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
         setText(data.value);
@@ -20,6 +23,16 @@ export function Search() {
     const handleQuery = () => {
         setSubmitted(true);
     }
+
+    const handleTableCellClick = (filePath: string) => {
+      setSelectedFilePath(filePath);
+      setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedFilePath(null);
+    };
 
     useEffect(() => {
         if (submitted && text !== '') {
@@ -73,7 +86,10 @@ export function Search() {
               <TableBody>
                 {response.map((item) => (
                   <TableRow key={item.file_path} className={classes.tableRowContainer}>
-                    <TableCell className={classes.tableCell}>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => handleTableCellClick(item.file_path)}
+                    >                      
                       {item.file_path}
                     </TableCell>
                     <TableCell className={classes.tableCell}>
@@ -88,6 +104,14 @@ export function Search() {
           ) : (
             <p className={classes.noResultsMessage}>No results found, yet...</p>
           )}
+
+          {isModalOpen && selectedFilePath && (
+              <MarkdownDialog 
+                isDialogOpen={isModalOpen}
+                selectedFilePath={selectedFilePath}
+                onCloseDialog={closeModal}
+              />
+            )}
         </>
       );
 }
