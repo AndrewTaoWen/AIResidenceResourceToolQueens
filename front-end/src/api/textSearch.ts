@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SimilaritySearchResponse } from '../types/similaritySearchRespoonse';
+import { SimilarityResponseItem } from '../types/similaritySearchRespoonse';
 
 const API_BASE_URL = 'http://127.0.0.1:8000/api/similarity-search/'; 
 
@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-export const sendData = async (inputString : string) : Promise<SimilaritySearchResponse> => {
+export const sendData = async (inputString : string) : Promise<SimilarityResponseItem[]> => {
     try {
         const response = await apiClient.post('', { input_string: inputString });
         console.log(response.data);

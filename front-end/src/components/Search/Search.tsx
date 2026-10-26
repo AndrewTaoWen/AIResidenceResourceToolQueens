@@ -13,7 +13,7 @@ export function Search() {
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const handleTextChange = (event: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+    const handleTextChange = (_event: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
         setText(data.value);
     }
 
